@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digiescolhido · descubra seu parceiro digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="casco">
+    <header class="topo">
+      <h1>Digiescolhido</h1>
+      <nav class="abas" aria-label="Seções do aplicativo">
+        <button type="button" class="aba" data-acao="aba" data-aba="teste" aria-current="page">Teste</button>
+        <button type="button" class="aba" data-acao="aba" data-aba="mural">Mural</button>
+        <button type="button" class="aba" data-acao="aba" data-aba="painel">Painel</button>
+      </nav>
+    </header>
+
+    <main class="tela">
+      <p id="status" class="aviso" role="status" aria-live="polite"></p>
+
+      <!-- 1 e 2 e 3: identificação, quiz e revelação -->
+      <section id="aba-teste" aria-label="Teste do parceiro digital">
+        <div id="palco"></div>
+      </section>
+
+      <!-- 4: mural público com CRUD -->
+      <section id="aba-mural" aria-label="Mural de duplas" hidden>
+        <h2>Mural de duplas</h2>
+        <div class="ferramentas">
+          <label class="campo">
+            <span>Buscar</span>
+            <input id="busca" type="search" placeholder="Nome do jogador ou do Digimon">
+          </label>
+          <label class="campo">
+            <span>Atributo</span>
+            <select id="filtro-atributo">
+              <option value="">Todos</option>
+              <option>Vacina</option>
+              <option>Dado</option>
+              <option>Vírus</option>
+              <option>Livre</option>
+            </select>
+          </label>
+          <label class="marcar">
+            <input id="so-favoritos" type="checkbox">
+            <span>Só favoritas</span>
+          </label>
+          <button type="button" class="botao secundario" data-acao="atualizar">Atualizar</button>
+        </div>
+        <p id="contagem-mural" class="discreto"></p>
+        <div id="mural-grid" class="grade"></div>
+      </section>
+
+      <!-- Painel de informações -->
+      <section id="aba-painel" aria-label="Painel de indicadores" hidden>
+        <h2>Painel</h2>
+        <div id="indicadores" class="indicadores"></div>
+        <p id="painel-vazio" class="vazio" hidden>Ainda não há duplas. Faça o teste para gerar a primeira.</p>
+        <div id="painel-conteudo">
+          <div class="graficos">
+            <figure class="grafico">
+              <figcaption>Duplas por atributo</figcaption>
+              <div class="area"><canvas id="g-atributo" aria-label="Gráfico de pizza: duplas por atributo" role="img"></canvas></div>
+            </figure>
+            <figure class="grafico">
+              <figcaption>Digimon Child (Rookie) disponíveis por atributo</figcaption>
+              <div class="area"><canvas id="g-nivel" aria-label="Gráfico de barras: Digimon disponíveis por atributo" role="img"></canvas></div>
+            </figure>
+            <figure class="grafico largo">
+              <figcaption>Duplas criadas por dia</figcaption>
+              <div class="area"><canvas id="g-dia" aria-label="Gráfico de linha: duplas por dia" role="img"></canvas></div>
+            </figure>
+          </div>
+          <div class="duas-colunas">
+            <section>
+              <h3>Top 5 Digimon sorteados</h3>
+              <ol id="ranking" class="ranking"></ol>
+            </section>
+            <section>
+              <h3>Duplas agrupadas por atributo</h3>
+              <table id="agrupamento" class="tabela">
+                <thead><tr><th scope="col">Atributo</th><th scope="col">Duplas</th><th scope="col">Parte do total</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <details class="registro">
+        <summary>Registro de requisições HTTP</summary>
+        <ul id="log-lista"></ul>
+      </details>
+    </main>
+  </div>
+
+  <!-- Detalhe: GET pelo id -->
+  <dialog id="dlg-detalhe" aria-labelledby="detalhe-titulo">
+    <div id="detalhe-corpo"></div>
+    <div class="dialogo-acoes">
+      <button type="button" class="botao secundario" data-acao="fechar">Fechar</button>
+    </div>
+  </dialog>
+
+  <!-- Edição: PUT -->
+  <dialog id="dlg-editar" aria-labelledby="editar-titulo">
+    <form id="form-editar" novalidate>
+      <h2 id="editar-titulo">Editar dupla</h2>
+      <label class="campo">
+        <span>Nome do jogador</span>
+        <input id="editar-nome" maxlength="24" aria-describedby="editar-erro">
+      </label>
+      <label class="campo">
+        <span>Digimon parceiro</span>
+        <select id="editar-digimon"></select>
+      </label>
+      <p id="editar-erro" class="erro-campo" role="alert"></p>
+      <div class="dialogo-acoes">
+        <button type="button" class="botao secundario" data-acao="fechar">Cancelar</button>
+        <button type="submit" class="botao">Salvar alterações</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
